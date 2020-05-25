@@ -127,13 +127,13 @@ ax.set_ylabel('Count');
 
 Below, we have four different sample scenarios.  Each group will code out the following: 
 
-1. Generate a "population" to sample from based on the type of distribution.
+You are given a "population" to sample from based on the type of distribution.
 
-2. Take a random sample of size n, where n > 30, from the population and calculate the mean of that population.
+1. Take a random sample of size n, where n > 30, from the population and calculate the mean of that population.
 
-3. Repeat the sample n numbers of times (n = 1000). 
+2. Repeat the sample n numbers of times (n = 1000). 
 
-4. Plot the sampling distribution
+3. Plot the sampling distribution
 
 ## Group 1:
 
