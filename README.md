@@ -1,25 +1,49 @@
 
-# Sampling
+# Sampling and the Central Limit Theorem
+
+![sample](https://media.giphy.com/media/OsOP6zRwxrnji/giphy.gif)
+
+# Agenda 
+
+1. Differentiate terms: discriptive/inferential statistics population/sample, paramater/statistic, sample distribution/sampling distribution
+2. Use Numpy to randomly sample a distribution
+3. Describe the central limit theorem and connect it to our knowledge of distributions and sampling.
+4. Define and Calculate Standard Error
+
+## Probability vs Statistics
+- Probability starts with known probabilities and obtains how probable any particular observation would be
+- Statistics works the other way around. Start with and observations (data) and try to determine its probability
+
+## Descriptive vs Inferential Statistics
+- Descriptive Statistics
+   > simply describe what is observed. The average height of a high school football team can be directly calculated by measuring all of the current players height.
+- Inferential statistics 
+    > try to say something general about a larger group of subjects than those we have measured. For example, we would be doing inferential statistics if we wanted to know about the average height of all high school football teams.
+    - To put it another way, statistical inference is the process by which we take observations of a subset of a group and generalize to the whole group.
 
 ## Population Inference
 
-The mayor's office has hired Flatiron Data Science Immersive students to determine a way to fix traffic congestion. A good starting point is to determine out what proportion of the population of Seattle owns a car.
+The mayor's office has hired Flatiron Data Science Immersive students to determine a way to fix traffic congestion. A good starting point is to determine what proportion of the population of Seattle owns a car.
+
+![traffic](https://media.giphy.com/media/3orieWY8RCodjD4qqs/giphy.gif)
 
 In order for us to make any determinations about a population, we must first get information about it.
 
-Because it's impractical to ever usually get data about *everyone* in a population, we must take a sample.
+Because it's usually completely impractical to get data about *everyone* in a population, we must take a sample.
 
+## Key Terms
+ - the entire group is known as the **population**  
+ - the subset is a known as the **sample**
 
-
-What do we want our sample to look like?
-
-In particular, what relationship do we want between the sample and the population? What steps can we take to improve our odds of success in achieving this?
 
 ![pop](./img/sample_pop.png)
 
-**Random sampling is not easy to do. Let's look at an example:**
+- We would use samples if the population is:
+    - Too big to enumerate
+    - too difficult/time consuming or expensive to sample in its entirety.
 
-Imagine you are trying to determine what proportion of DC metro area people own a car.
+**Random sampling is not easy to do**  
+Continuing our Seattle car example, how would we take a sample? 
 
 Here are two strategies we might employ:
 
@@ -30,20 +54,35 @@ Here are two strategies we might employ:
 
 Which strikes you as better?
 
-When we gather a sample, we are trying to minimize the bias of our sample while also minimizing our cost.
+What do we want our sample to look like?
 
-##### Population v Sample Terminology
-Characteristics of populations are called *parameters*
+In particular, what relationship do we want between the sample and the population? What steps can we take to improve our odds of success in achieving this?
 
-Characteristics of a sample are called *statistics*
+# Discussion
+
+![talk amongst yourselves](https://media.giphy.com/media/l2SpQRuCQzY1RXHqM/giphy.gif)
+
+
+
+
+## Population v Sample Terminology
+Characteristics of populations are called **parameters**
+
+Characteristics of a sample are called **statistics**
+
+A sample statistic is a **point estimate** of the population parameter
 
 ![imgsample](./img/sample_stats.png)
 
-So, we decide on an appropriate manner to collect the sample (more to come in power and effect), collect it, then calculate a sample statistic. 
+# A Simulation to Reinforce Our Definitions
 
-Let's simulate this with code.  
+Let's create a population of systolic blood pressure of adult males in Chicago, assuming a mean of 114 mmHg with a standard deviation of 11 mmHg.  We will also assume the adult male population to be 1.5 million. 
 
-Let's create a population of systolic blood pressure of adult males in Chicago, assuming a mean of 114 with a standard deviation of 11.  We will also assume the adult male population to be 1.5 million. 
+It is impossible to measure the systolic blood pressure of every man in Chicago, but let's assume multiple investigations have led to the conclusion the the mean and std of this population is 114 and 11, respecively. These are therefore estimators of the population parameter.
+
+$\Large\hat\mu = 114$  
+$\Large\hat\sigma = 11$
+
 
 
 
@@ -53,12 +92,13 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 pop = int(1.5*10**6)
-sys_pop = np.random.normal(114, 11, pop)
+# Use numpy to generate a normal distribution of the 
+sys_pop = np.random.normal(loc=114, scale=11, size=pop)
 
 fig, ax = plt.subplots()
 
-sns.kdeplot(sys_pop, ax=ax)
-ax.set_title('Adult Male Systolic Blood Pressure')
+sns.kdeplot(sys_pop, ax=ax, shade=True)
+ax.set_title('Distribution of Adult Male Systolic Blood Pressure')
 ax.set_xlabel('Systolic BP')
 ```
 
@@ -70,17 +110,39 @@ ax.set_xlabel('Systolic BP')
 
 
 
-![png](index_files/index_8_1.png)
+![png](index_files/index_13_1.png)
 
 
-We randomly sample 50 men from this population, resulting in the following sample.
+Let's then imagine we develop an effective manner of random sampling, and simulate with numpy. Our sample size is 40 people.
+
 
 
 ```python
-sample = np.random.choice(sys_pop, 50)
+sample_size = 40
+sample = np.random.choice(sys_pop, sample_size)
+
+# We can look at the distribution of the values in the sample.
 ```
 
-We can then calculate sample statistics.
+
+```python
+fig, ax = plt.subplots()
+sns.distplot(sample, ax=ax, bins=15)
+ax.set_title('Sample Distribution of Systolic BP Measurements')
+```
+
+
+
+
+    Text(0.5, 1.0, 'Sample Distribution of Systolic BP Measurements')
+
+
+
+
+![png](index_files/index_16_1.png)
+
+
+We can then calculate the sample statistics:
 
 
 ```python
@@ -89,18 +151,20 @@ print(f'Sample standard deviation: {sample.std()}')
 print(f'Sample median: {np.median(sample)}')
 ```
 
-    Sample mean: 117.32143521266951
-    Sample standard deviation: 9.93574629444601
-    Sample median: 118.24184711253844
+    Sample mean: 115.13518836266857
+    Sample standard deviation: 10.8170085734385
+    Sample median: 114.23470724109055
 
 
 If we repeated this process, taking samples of the population repeatedly, we would get an array of sample statistics.
 
 
 ```python
+
 number_of_samples = 1000
 sample_size = 50
 sample_stats = []
+
 for _ in range(number_of_samples):
     sample = np.random.choice(sys_pop, sample_size)
     # collect the mean of each of the 1000 samples in sample stats
@@ -120,7 +184,196 @@ ax.set_ylabel('Count');
 ```
 
 
-![png](index_files/index_16_0.png)
+![png](index_files/index_22_0.png)
+
+
+An interesting property of this sampling distribution:
+    
+As we continue to sample, the mean of the sampling distribution gets closer and closer to the population mean.
+
+
+```python
+pop_mean = 114
+pop_sample_difference = []
+for n in range(1,1000):
+    number_of_samples = n
+    sample_size = 20
+    sample_stats = []
+    for _ in range(number_of_samples):
+        sample = np.random.choice(sys_pop, sample_size)
+        # collect the mean of each of the 1000 samples in sample stats
+        sample_stats.append(sample.mean())
+        
+    pop_sample_difference.append(np.absolute(pop_mean - np.mean(sample_stats)))
+    
+```
+
+
+```python
+fig, ax = plt.subplots()
+ax.bar(list(range(1,1000)), pop_sample_difference)
+```
+
+
+
+
+    <BarContainer object of 999 artists>
+
+
+
+
+![png](index_files/index_25_1.png)
+
+
+# Word Exercise 
+Put the variables in the correct place.
+
+
+
+```python
+
+var_1 = 'population'
+var_2 = 'sample'
+var_3 = 'point estimate'
+var_4 = 'statistic'
+var_5 = 'parameter'
+var_6 = 'sampling'
+
+
+print(f"""We sampled 40 bee hives and calcuted the mean colony population 
+          to be 75,690 bees. 75,690 is a {var_1} of the population paramter\n""")
+
+print(f"""We repeatedly sample 40 people at random from Seattle and 
+        measure their heart rate,then calculate the mean of each sample. 
+        We call the plot of this collection of statistics
+        the {var_2} distribution.
+        """)
+
+print(f"""There are exactly 58 Javan Rhino's left in the wild. 
+        Their mean length has been measured accurately at 5 feet.
+        This mean length is considered a population {var_3}. 
+        """)
+
+print(f"""If we plot a histogram of individual pistil lengths 
+      measured on 50 hibiscus flowers, we would be plotting the distribution 
+      of an attribute of our {var_4} of hibiscus flowers. 
+        """)
+
+print(f"""Since every restaurant in Chicago is required by law to register
+        with the city, we can accurately count the number of active pizza restaurants
+        actively operating right now.  This group represents the {var_5} of actively 
+        operating, registered pizza restaurants in Chicago.
+    """)
+
+print(f"""The mean number of hourly hits to Jelle's Marble Racing website 
+            randomly sampled across a seven day period represents a sample
+            {var_6}.
+        """)
+```
+
+    We sampled 40 bee hives and calcuted the mean colony population 
+              to be 75,690 bees. 75,690 is a population of the population paramter
+    
+    We repeatedly sample 40 people at random from Seattle and 
+            measure their heart rate,then calculate the mean of each sample. 
+            We call the plot of this collection of statistics
+            the sample distribution.
+            
+    There are exactly 58 Javan Rhino's left in the wild. 
+            Their mean length has been measured accurately at 5 feet.
+            This mean length is considered a population point estimate. 
+            
+    If we plot a histogram of individual pistil lengths 
+          measured on 50 hibiscus flowers, we would be plotting the distribution 
+          of an attribute of our statistic of hibiscus flowers. 
+            
+    Since every restaurant in Chicago is required by law to register
+            with the city, we can accurately count the number of active pizza restaurants
+            actively operating right now.  This group represents the parameter of actively 
+            operating, registered pizza restaurants in Chicago.
+        
+    The mean number of hourly hits to Jelle's Marble Racing website 
+                randomly sampled across a seven day period represents a sample
+                sampling.
+            
+
+
+
+```python
+#__SOLUTION__
+# Word Exercise
+
+var_1 = 'population'
+var_2 = 'sample'
+var_3 = 'point estimate'
+var_4 = 'statistic'
+var_5 = 'parameter'
+var_6 = 'sampling'
+
+
+print(f"""We sampled 40 bee hives and calcuted the mean colony population 
+          to be 75,690 bees. 75,690 is a {var_3} of the population paramter\n""")
+
+print(f"""We repeatedly sample 40 people at random from Seattle and 
+        measure their heart rate,then calculate the mean of each sample. 
+        We call the plot of this collection of statistics
+        the {var_6} distribution.
+        """)
+
+print(f"""There are exactly 58 Javan Rhino's left in the wild. 
+        Their mean length has been measured accurately at 5 feet.
+        This mean length is considered a population {var_5}. 
+        """)
+
+print(f"""If we plot a histogram of individual pistil lengths 
+      measured on 50 hibiscus flowers, we would be plotting the distribution 
+      of an attribute of our {var_2} of hibiscus flowers. 
+        """)
+
+print(f"""Since every restaurant in Chicago is required by law to register
+        with the city, we can accurately count the number of active pizza restaurants
+        actively operating right now.  This group represents the {var_1} of actively 
+        operating, registered pizza restaurants in Chicago.
+    """)
+
+print(f"""The mean number of hourly hits to Jelle's Marble Racing website 
+            randomly sampled across a seven day period represents a sample
+            {var_4}.
+        """)
+```
+
+    We sampled 40 bee hives and calcuted the mean colony population 
+              to be 75,690 bees. 75,690 is a point estimate of the population paramter
+    
+    We repeatedly sample 40 people at random from Seattle and 
+            measure their heart rate,then calculate the mean of each sample. 
+            We call the plot of this collection of statistics
+            the sampling distribution.
+            
+    There are exactly 58 Javan Rhino's left in the wild. 
+            Their mean length has been measured accurately at 5 feet.
+            This mean length is considered a population parameter. 
+            
+    If we plot a histogram of individual pistil lengths 
+          measured on 50 hibiscus flowers, we would be plotting the distribution 
+          of an attribute of our sample of hibiscus flowers. 
+            
+    Since every restaurant in Chicago is required by law to register
+            with the city, we can accurately count the number of active pizza restaurants
+            actively operating right now.  This group represents the population of actively 
+            operating, registered pizza restaurants in Chicago.
+        
+    The mean number of hourly hits to Jelle's Marble Racing website 
+                randomly sampled across a seven day period represents a sample
+                statistic.
+            
+
+
+
+# 2. Use numpy to randomly sample a distribution
+
+
+
 
 
 ## Group Exercise
@@ -134,6 +387,25 @@ You are given a "population" to sample from based on the type of distribution.
 2. Repeat the sample n numbers of times (n = 1000). 
 
 3. Plot the sampling distribution
+
+
+```python
+mccalister = ['Adam', 'Amanda','Chum', 'Dann', 
+ 'Jacob', 'Jason', 'Johnhoy', 'Karim', 
+'Leana','Luluva', 'Matt', 'Maximilian' ]
+
+for n in range(1,4):
+    group = np.random.choice(mccalister, 4, replace=False)
+    print(f'group {n}', group)
+    for name in list(group):
+        mccalister.remove(name)
+
+```
+
+    group 1 ['Maximilian' 'Luluva' 'Dann' 'Matt']
+    group 2 ['Karim' 'Chum' 'Leana' 'Jacob']
+    group 3 ['Jason' 'Amanda' 'Adam' 'Johnhoy']
+
 
 ## Group 1:
 
@@ -156,7 +428,7 @@ ax.set_title('Strikes Per Game')
 
 
 
-![png](index_files/index_20_1.png)
+![png](index_files/index_35_1.png)
 
 
 
@@ -175,17 +447,17 @@ ax.hist(sample_means, bins = 20)
 
 
 
-    (array([  1.,   5.,  15.,  22.,  45.,  73.,  72., 113., 120., 140., 111.,
-            103.,  77.,  40.,  35.,  18.,   2.,   5.,   2.,   1.]),
-     array([6.5  , 6.577, 6.654, 6.731, 6.808, 6.885, 6.962, 7.039, 7.116,
-            7.193, 7.27 , 7.347, 7.424, 7.501, 7.578, 7.655, 7.732, 7.809,
-            7.886, 7.963, 8.04 ]),
+    (array([  5.,   7.,  13.,  24.,  45.,  76.,  75., 148., 108., 133., 117.,
+             91.,  66.,  36.,  35.,  15.,   3.,   0.,   2.,   1.]),
+     array([6.46 , 6.541, 6.622, 6.703, 6.784, 6.865, 6.946, 7.027, 7.108,
+            7.189, 7.27 , 7.351, 7.432, 7.513, 7.594, 7.675, 7.756, 7.837,
+            7.918, 7.999, 8.08 ]),
      <a list of 20 Patch objects>)
 
 
 
 
-![png](index_files/index_21_1.png)
+![png](index_files/index_36_1.png)
 
 
 ## Group 2:
@@ -211,7 +483,7 @@ ax.set_xlabel("Pieces of Mail")
 
 
 
-![png](index_files/index_23_1.png)
+![png](index_files/index_38_1.png)
 
 
 
@@ -237,7 +509,7 @@ ax.set_xlabel('Number of pieces of mail')
 
 
 
-![png](index_files/index_24_1.png)
+![png](index_files/index_39_1.png)
 
 
 # Group 3 
@@ -260,7 +532,7 @@ ax.set_xlabel('Minutes');
 
 
 
-![png](index_files/index_26_1.png)
+![png](index_files/index_41_1.png)
 
 
 
@@ -286,10 +558,10 @@ ax.set_xlabel("Number of minutes between customers")
 
 
 
-![png](index_files/index_27_1.png)
+![png](index_files/index_42_1.png)
 
 
-## Central Limit Theorem
+# 3. Central Limit Theorem
 
 If we take repeated samples of a population, the sampling distribution of sample means will approximate to a normal distribution, no matter the underlying distribution!
 
@@ -317,7 +589,7 @@ As we will see in hypothesis testing, pairing this theorem with the Empirical ru
 
 Knowing that any sampling distribtion, no matter the underlying population distribution, will approach normality, we will be able to judge, given the empirical rule, how rare a given sample statistic is.  
 
-### An Example
+## Bike Example
 A bicycle advocacy group has come to us to see if it would make sense to increase the length of time users of Capital Bike Share have to ride on their bikes before they have to return them. Let's analyze a collection of Capital Bike Share data to determine if we should lengthen the time people have with their bikes.
 
 Let's head over [here](https://s3.amazonaws.com/capitalbikeshare-data/index.html) for some DC bike data!
@@ -338,25 +610,20 @@ import requests
 ! unzip temp.zip
 ```
 
-    --2020-05-25 14:36:08--  https://s3.amazonaws.com/capitalbikeshare-data/202003-capitalbikeshare-tripdata.zip
-    Resolving s3.amazonaws.com... 52.216.101.61
-    Connecting to s3.amazonaws.com|52.216.101.61|:443... connected.
+    --2020-05-30 17:59:40--  https://s3.amazonaws.com/capitalbikeshare-data/202003-capitalbikeshare-tripdata.zip
+    Resolving s3.amazonaws.com... 52.216.85.109
+    Connecting to s3.amazonaws.com|52.216.85.109|:443... connected.
     HTTP request sent, awaiting response... 200 OK
     Length: 3835293 (3.7M) [application/zip]
     Saving to: 'temp.zip'
     
-    temp.zip            100%[===================>]   3.66M  4.32MB/s    in 0.8s    
+    temp.zip            100%[===================>]   3.66M  2.57MB/s    in 1.4s    
     
-    2020-05-25 14:36:09 (4.32 MB/s) - 'temp.zip' saved [3835293/3835293]
+    2020-05-30 17:59:41 (2.57 MB/s) - 'temp.zip' saved [3835293/3835293]
     
     Archive:  temp.zip
       inflating: 202003-capitalbikeshare-tripdata.csv  
 
-
-
-```python
-
-```
 
 
 ```python
@@ -469,6 +736,7 @@ df.tail()
 
 
 ```python
+# convert duration from seconds to minutes
 trip_durations = df['Duration'] / 60
 trip_durations_2hr = trip_durations[trip_durations < 2*60]
 ```
@@ -485,7 +753,7 @@ trip_durations_2hr.hist(bins=100);
 ```
 
 
-![png](index_files/index_43_0.png)
+![png](index_files/index_57_0.png)
 
 
 
@@ -513,19 +781,6 @@ print(f'pop_mean is {pop_mean} \npop_std is {pop_std}')
     pop_std is 36.47173596361402
 
 
-#### When we take multiple samples from the distribution, and plot the means of each sample, the shape of the curve shifts.
-
-![means](./img/meansofsamples.png)
-
-#### The number of samples drives the shape of the curve more than the sample size itself
-
-![moremeans](./img/moresamplescurve.png)
-
-**Fewer samples**
-![lesssamples](./img/lesssamplescurve.png)
-
-### Let's confirm with code ourselves!
-
 
 ```python
 def one_sample_mean(population):
@@ -541,18 +796,23 @@ one_sample_mean(trip_durations_2hr)
 
 
 
-    18.519333333333336
+    17.846333333333334
 
 
+
+### When we take multiple samples from the distribution,and plot the means of each sample, the shape of the curve shifts
 
 
 ```python
 d = [one_sample_mean(trip_durations) for i in range(1000)]
-plt.hist(d, bins=50);
+plt.hist(d, bins=50)
+plt.title('''.
+'''
+);
 ```
 
 
-![png](index_files/index_53_0.png)
+![png](index_files/index_64_0.png)
 
 
 
@@ -571,28 +831,33 @@ def central_limit_theorem_plotter(distribution, sample_size, num_samples):
     plt.title(title)
 ```
 
-
-```python
-central_limit_theorem_plotter(trip_durations, 10000, 500);
-```
-
-    mean = 18.96967568
-
-
-
-![png](index_files/index_55_1.png)
+### The number of samples drives the shape of the curve more than the sample size itself
 
 
 
 ```python
-central_limit_theorem_plotter(trip_durations, 100, 50);
+central_limit_theorem_plotter(trip_durations, 1000, 500);
 ```
 
-    mean = 18.362706666666664
+    mean = 18.900280133333332
 
 
 
-![png](index_files/index_56_1.png)
+![png](index_files/index_67_1.png)
+
+
+### Larger sample size, Fewer samples
+
+
+```python
+central_limit_theorem_plotter(trip_durations, 5000, 50);
+```
+
+    mean = 18.941702066666668
+
+
+
+![png](index_files/index_69_1.png)
 
 
 * What happens as we increase the sample size?
@@ -611,7 +876,7 @@ plt.hist(exponential, bins=50);
 ```
 
 
-![png](index_files/index_60_0.png)
+![png](index_files/index_73_0.png)
 
 
 
@@ -619,11 +884,11 @@ plt.hist(exponential, bins=50);
 central_limit_theorem_plotter(exponential, 4000, 10000)
 ```
 
-    mean = 1.0663546365385943
+    mean = 1.0161536000655402
 
 
 
-![png](index_files/index_61_1.png)
+![png](index_files/index_74_1.png)
 
 
 ### Standard Error of the Mean
@@ -651,11 +916,6 @@ How should sample size influence standard error of the mean?
 
 It will get *smaller* as sample size *increases*
 
-![error](./img/diminishing_error.png)
+![error](./img/diminishing_error.png)  
 Important implication: The Standard Error of the mean remains the same as long as the population standard deviation is known and sample size remains the same.
 
-
-
-```python
-
-```
