@@ -375,77 +375,6 @@ print(f"""The mean number of hourly hits to Jelle's Marble Racing website
 
 
 
-```python
-#__SOLUTION__
-# Word Exercise
-
-var_1 = 'population'
-var_2 = 'sample'
-var_3 = 'point estimate'
-var_4 = 'statistic'
-var_5 = 'parameter'
-var_6 = 'sampling'
-
-
-print(f"""We sampled 40 bee hives and calcuted the mean colony population 
-          to be 75,690 bees. 75,690 is a {var_3} of the population paramter\n""")
-
-print(f"""We repeatedly sample 40 people at random from Seattle and 
-        measure their heart rate,then calculate the mean of each sample. 
-        We call the plot of this collection of statistics
-        the {var_6} distribution.
-        """)
-
-print(f"""There are exactly 58 Javan Rhino's left in the wild. 
-        Their mean length has been measured accurately at 5 feet.
-        This mean length is considered a population {var_5}. 
-        """)
-
-print(f"""If we plot a histogram of individual pistil lengths 
-      measured on 50 hibiscus flowers, we would be plotting the distribution 
-      of an attribute of our {var_2} of hibiscus flowers. 
-        """)
-
-print(f"""Since every restaurant in Chicago is required by law to register
-        with the city, we can accurately count the number of active pizza restaurants
-        actively operating right now.  This group represents the {var_1} of actively 
-        operating, registered pizza restaurants in Chicago.
-    """)
-
-print(f"""The mean number of hourly hits to Jelle's Marble Racing website 
-            randomly sampled across a seven day period represents a sample
-            {var_4}.
-        """)
-```
-
-    We sampled 40 bee hives and calcuted the mean colony population 
-              to be 75,690 bees. 75,690 is a point estimate of the population paramter
-    
-    We repeatedly sample 40 people at random from Seattle and 
-            measure their heart rate,then calculate the mean of each sample. 
-            We call the plot of this collection of statistics
-            the sampling distribution.
-            
-    There are exactly 58 Javan Rhino's left in the wild. 
-            Their mean length has been measured accurately at 5 feet.
-            This mean length is considered a population parameter. 
-            
-    If we plot a histogram of individual pistil lengths 
-          measured on 50 hibiscus flowers, we would be plotting the distribution 
-          of an attribute of our sample of hibiscus flowers. 
-            
-    Since every restaurant in Chicago is required by law to register
-            with the city, we can accurately count the number of active pizza restaurants
-            actively operating right now.  This group represents the population of actively 
-            operating, registered pizza restaurants in Chicago.
-        
-    The mean number of hourly hits to Jelle's Marble Racing website 
-                randomly sampled across a seven day period represents a sample
-                statistic.
-            
-
-
-
 # 2. Use numpy to randomly sample a distribution
 
 
@@ -504,36 +433,7 @@ ax.set_title('Strikes Per Game')
 
 
 
-![png](index_files/index_42_1.png)
-
-
-
-```python
-#__SOLUTION__
-
-sample_means = []
-for n in range(1000):
-    sample = np.random.choice(population, 50)
-    sample_means.append(sample.mean())
-    
-fig, ax = plt.subplots()
-ax.hist(sample_means, bins = 20)
-```
-
-
-
-
-    (array([  1.,   0.,   1.,   1.,   5.,  28.,  34.,  68.,  83., 100., 115.,
-            167., 111., 121.,  67.,  51.,  24.,  12.,   6.,   5.]),
-     array([6.26 , 6.343, 6.426, 6.509, 6.592, 6.675, 6.758, 6.841, 6.924,
-            7.007, 7.09 , 7.173, 7.256, 7.339, 7.422, 7.505, 7.588, 7.671,
-            7.754, 7.837, 7.92 ]),
-     <a list of 20 Patch objects>)
-
-
-
-
-![png](index_files/index_43_1.png)
+![png](index_files/index_41_1.png)
 
 
 ## Group 2:
@@ -559,33 +459,7 @@ ax.set_xlabel("Pieces of Mail")
 
 
 
-![png](index_files/index_45_1.png)
-
-
-
-```python
-#__SOLUTION__
-
-sample_means = []
-for n in range(1000):
-    sample = np.random.choice(mail_population, 50)
-    sample_means.append(sample.mean())
-    
-fig, ax = plt.subplots()
-ax.hist(sample_means, bins = 30)
-ax.set_title('Sample Means of Pieces of Mail\n Arriving at your door')
-ax.set_xlabel('Number of pieces of mail')
-```
-
-
-
-
-    Text(0.5, 0, 'Number of pieces of mail')
-
-
-
-
-![png](index_files/index_46_1.png)
+![png](index_files/index_43_1.png)
 
 
 # Group 3 
@@ -608,33 +482,7 @@ ax.set_xlabel('Minutes');
 
 
 
-![png](index_files/index_48_1.png)
-
-
-
-```python
-#__SOLUTION__
-
-sample_means = []
-for n in range(1000):
-    sample = np.random.choice(piggly_population, 50)
-    sample_means.append(sample.mean())
-    
-fig, ax = plt.subplots()
-ax.hist(sample_means, bins = 30);
-ax.set_title("""Sample means of number of minutes\n between people entering a Piggly Wiggly""")
-ax.set_xlabel("Number of minutes between customers")
-```
-
-
-
-
-    Text(0.5, 0, 'Number of minutes between customers')
-
-
-
-
-![png](index_files/index_49_1.png)
+![png](index_files/index_45_1.png)
 
 
 # 3. Central Limit Theorem
@@ -833,7 +681,7 @@ sns.boxplot(df.Duration, ax=ax[1])
 
 
 
-![png](index_files/index_62_1.png)
+![png](index_files/index_58_1.png)
 
 
 The shape is difficult to see because of the outliers. Let's remove some to get a better sense of the shape
@@ -854,7 +702,7 @@ sns.distplot(pop_no_fliers.Duration)
 
 
 
-![png](index_files/index_64_1.png)
+![png](index_files/index_60_1.png)
 
 
 That shape looks like an exponential curve. We briefly touched on the exponential in the plot exercise at the beginning of distributions (remember the lifespan of a computer part)?
@@ -872,7 +720,7 @@ plt.boxplot(member_df['Duration']);
 ```
 
 
-![png](index_files/index_67_0.png)
+![png](index_files/index_63_0.png)
 
 
 
@@ -913,7 +761,7 @@ sns.distplot(member_df_nofliers.Duration, bins = 20, ax=ax);
 ```
 
 
-![png](index_files/index_70_0.png)
+![png](index_files/index_66_0.png)
 
 
 
@@ -930,7 +778,7 @@ sns.boxplot(casual_df.Duration)
 
 
 
-![png](index_files/index_71_1.png)
+![png](index_files/index_67_1.png)
 
 
 
@@ -952,7 +800,7 @@ sns.distplot(casual_df_nofliers.Duration, bins=20, ax=ax)
 
 
 
-![png](index_files/index_73_1.png)
+![png](index_files/index_69_1.png)
 
 
 
@@ -970,7 +818,7 @@ sns.distplot(casual_df_nofliers.Duration, bins=20, ax=ax, color='green')
 
 
 
-![png](index_files/index_74_1.png)
+![png](index_files/index_70_1.png)
 
 
 #### Get population statistics
@@ -1052,7 +900,7 @@ plt.hist(d, bins=50)
 
 
 
-![png](index_files/index_82_1.png)
+![png](index_files/index_78_1.png)
 
 
 
@@ -1083,7 +931,7 @@ central_limit_theorem_plotter(df.Duration, 1000, 500);
 
 
 
-![png](index_files/index_85_1.png)
+![png](index_files/index_81_1.png)
 
 
 ### Larger sample size, Fewer samples
@@ -1097,7 +945,7 @@ central_limit_theorem_plotter(df.Duration, 5000, 50);
 
 
 
-![png](index_files/index_87_1.png)
+![png](index_files/index_83_1.png)
 
 
 * What happens as we increase the sample size?
@@ -1114,5 +962,5 @@ central_limit_theorem_plotter(casual_df.Duration, 1000, 500, 'green')
 
 
 
-![png](index_files/index_89_1.png)
+![png](index_files/index_85_1.png)
 
