@@ -9,7 +9,7 @@
 2. Define and calculate standard error
 3. Use Numpy to randomly sample a distribution
 4. Describe the central limit theorem and connect it to our knowledge of distributions and sampling.
-5. Citi Bike Example
+5. Capital Bikeshare Example
 
 ## Probability vs Statistics
 - Probability starts with known probabilities and obtains how probable any particular observation would be
@@ -660,7 +660,7 @@ df.tail()
 
 
 
-### What shape do you expect our dataset to have?
+### Let's take a look at the shape of our dataset
 
 
 ```python
@@ -705,13 +705,24 @@ sns.distplot(pop_no_fliers.Duration)
 ![png](index_files/index_60_1.png)
 
 
-That shape looks like an exponential curve. We briefly touched on the exponential in the plot exercise at the beginning of distributions (remember the lifespan of a computer part)?
-
 
 ```python
 member_df = df[df['Member type'] == 'Member']
 casual_df = df[df['Member type'] == 'Casual']
 ```
+
+
+    ---------------------------------------------------------------------------
+
+    NameError                                 Traceback (most recent call last)
+
+    <ipython-input-2-2ed6639d768d> in <module>
+    ----> 1 member_df = df[df['Member type'] == 'Member']
+          2 casual_df = df[df['Member type'] == 'Casual']
+
+
+    NameError: name 'df' is not defined
+
 
 
 ```python
@@ -720,7 +731,7 @@ plt.boxplot(member_df['Duration']);
 ```
 
 
-![png](index_files/index_63_0.png)
+![png](index_files/index_62_0.png)
 
 
 
@@ -761,7 +772,7 @@ sns.distplot(member_df_nofliers.Duration, bins = 20, ax=ax);
 ```
 
 
-![png](index_files/index_66_0.png)
+![png](index_files/index_65_0.png)
 
 
 
@@ -778,7 +789,7 @@ sns.boxplot(casual_df.Duration)
 
 
 
-![png](index_files/index_67_1.png)
+![png](index_files/index_66_1.png)
 
 
 
@@ -800,7 +811,7 @@ sns.distplot(casual_df_nofliers.Duration, bins=20, ax=ax)
 
 
 
-![png](index_files/index_69_1.png)
+![png](index_files/index_68_1.png)
 
 
 
@@ -818,7 +829,7 @@ sns.distplot(casual_df_nofliers.Duration, bins=20, ax=ax, color='green')
 
 
 
-![png](index_files/index_70_1.png)
+![png](index_files/index_69_1.png)
 
 
 #### Get population statistics
@@ -900,7 +911,7 @@ plt.hist(d, bins=50)
 
 
 
-![png](index_files/index_78_1.png)
+![png](index_files/index_77_1.png)
 
 
 
@@ -931,7 +942,7 @@ central_limit_theorem_plotter(df.Duration, 1000, 500);
 
 
 
-![png](index_files/index_81_1.png)
+![png](index_files/index_80_1.png)
 
 
 ### Larger sample size, Fewer samples
@@ -945,7 +956,7 @@ central_limit_theorem_plotter(df.Duration, 5000, 50);
 
 
 
-![png](index_files/index_83_1.png)
+![png](index_files/index_82_1.png)
 
 
 * What happens as we increase the sample size?
@@ -962,5 +973,5 @@ central_limit_theorem_plotter(casual_df.Duration, 1000, 500, 'green')
 
 
 
-![png](index_files/index_85_1.png)
+![png](index_files/index_84_1.png)
 
