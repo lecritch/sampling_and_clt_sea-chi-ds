@@ -9,7 +9,7 @@
 2. Define and calculate standard error
 3. Use Numpy to randomly sample a distribution
 4. Describe the central limit theorem and connect it to our knowledge of distributions and sampling.
-5. Citi Bike Example
+5. Capital Bikeshare Example
 
 ## Probability vs Statistics
 - Probability starts with known probabilities and obtains how probable any particular observation would be
@@ -358,11 +358,9 @@ Capital bike share is trying to figure out their pricing for members versus non-
 
 Let's head over [here](https://s3.amazonaws.com/capitalbikeshare-data/index.html) for some DC bike data!
 
-### What shape do you expect our dataset to have?
+### Let's take a look at the shape of our dataset
 
 The shape is difficult to see because of the outliers. Let's remove some to get a better sense of the shape
-
-That shape looks like an exponential curve. We briefly touched on the exponential in the plot exercise at the beginning of distributions (remember the lifespan of a computer part)?
 
 #### Get population statistics
 
